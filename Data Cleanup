@@ -1,4 +1,51 @@
 #1. Download main table
+#Had to install pip as well as beautifulsoup4, and requests
+#pip install beautifulsoup4
+#pip install requests
+from bs4 import BeautifulSoup
+import requests
+
+#List of table rows to hold rows from wikipedia page table
+tableRows = []
+
+#Get the wikipedia page via requests
+wikiPage = requests.get("https://en.wikipedia.org/wiki/Farebox_recovery_ratio")
+
+#Pass the page content to BS4 to parse
+soup = BeautifulSoup(wikiPage.content, "html.parser")
+
+#Select the table on the page (first element from findAll array)
+table = soup.find("table", {"class": "wikitable"})
+
+#Loop through table rows in the body of the table (not the head)
+for row in table.find("tbody").findAll("tr"):
+    #Get all the cells in the current row
+    cells = row.findAll("td")
+    if(len(cells) == 7):
+        #Store value from each cell in the appropriate variable
+        continent = cells[0].find(text=True)
+        country = cells[1].find(text=True)
+        system = cells[2].find(text=True)
+        ratio = cells[3].find(text=True)
+        fare_system = cells[4].find(text=True)
+        fare_rate = cells[5].find(text=True)
+        year = cells[6].find(text=True)
+
+        #Store variables in a dictionary
+        newRow = {
+            "continent":continent,
+            "country":country,
+            "system":system,
+            "ratio":ratio,
+            "fare_system":fare_system,
+            "fare_rate":fare_rate,
+            "year":year
+        }
+        #Add new row to tabelRows list for storage
+        tableRows.append(newRow)
+        #print(newRow)
+
+print(tableRows)
 
 
 #2. Data Clean-up:
