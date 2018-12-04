@@ -1,1 +1,11 @@
+#1. Download main table
 
+
+#2. Data Clean-up:
+#2a. All numbers are only numbers
+
+#2b. All currencies are converted to USD
+
+#2c. All fractions as floats 
+
+#2d. XXX
