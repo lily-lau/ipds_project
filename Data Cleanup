@@ -1,15 +1,13 @@
-#1. Download main table
 #Had to install pip as well as beautifulsoup4, and requests
-#following pip commands directly on terminal
 #pip install beautifulsoup4
 #pip install requests
-
-
 from bs4 import BeautifulSoup
 import requests
 
+
+#1
 #List of table rows to hold rows from wikipedia page table
-tableRows = []
+table = []
 
 #Get the wikipedia page via requests
 wikiPage = requests.get("https://en.wikipedia.org/wiki/Farebox_recovery_ratio")
@@ -18,21 +16,27 @@ wikiPage = requests.get("https://en.wikipedia.org/wiki/Farebox_recovery_ratio")
 soup = BeautifulSoup(wikiPage.content, "html.parser")
 
 #Select the table on the page (first element from findAll array)
-table = soup.find("table", {"class": "wikitable"})
+htmlTable = soup.find("table", {"class": "wikitable"})
 
 #Loop through table rows in the body of the table (not the head)
-for row in table.find("tbody").findAll("tr"):
+for row in htmlTable.find("tbody").findAll("tr"):
     #Get all the cells in the current row
     cells = row.findAll("td")
     if(len(cells) == 7):
+    
         #Store value from each cell in the appropriate variable
-        continent = cells[0].find(text=True)
-        country = cells[1].find(text=True)
-        system = cells[2].find(text=True)
-        ratio = cells[3].find(text=True)
-        fare_system = cells[4].find(text=True)
-        fare_rate = cells[5].find(text=True)
-        year = cells[6].find(text=True)
+        continent = cells[0].find(text=True).replace("\n","").replace("\r","")
+        country = cells[1].find(text=True).replace("\n","").replace("\r","")
+        system = cells[2].find(text=True).replace("\n","").replace("\r","")
+        #Replace any %'s in the string, convert to float, divide by 100 to get as % fraction/decimal
+        #2c all fractions are floats 
+        ratio = round((float(cells[3].find(text=True).replace("%",""))/100),4)
+        fare_system = cells[4].find(text=True).replace("\n","").replace("\r","")
+        #Had to use getText() to grab all the text in the cell- was only grabbing the currency type
+        fare_rate = cells[5].getText()
+        #Only grab the first 4 characters in the string and convert to int
+        #2a - All numbers are only numbers
+        year = int(cells[6].find(text=True)[:4])
 
         #Store variables in a dictionary
         newRow = {
@@ -44,18 +48,22 @@ for row in table.find("tbody").findAll("tr"):
             "fare_rate":fare_rate,
             "year":year
         }
-        #Add new row to tabelRows list for storage
-        tableRows.append(newRow)
-        #print(newRow)
+        #Add new row to table list for storage
+        table.append(newRow)
 
-print(tableRows)
+#just to be able to view the str in python in a 'neat' way
+#& monitor while data cleaning
+for row in table:
+    for key,val in row.items():
+        print key, "->", val
+#added a double space as we can't 
+#take out the spaces of the fare ratio yet & made some segments misleading
+    print("\n\n")
 
-
-#2. Data Clean-up:
-#2a. All numbers are only numbers
+print(table)
 
 #2b. All currencies are converted to USD
 
-#2c. All fractions as floats 
 
-#2d. XXX
+
+#2d.how to deal with cleaning currencies 
