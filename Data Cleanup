@@ -4,8 +4,6 @@
 from bs4 import BeautifulSoup
 import requests
 
-
-#1
 #List of table rows to hold rows from wikipedia page table
 table = []
 
@@ -23,19 +21,19 @@ for row in htmlTable.find("tbody").findAll("tr"):
     #Get all the cells in the current row
     cells = row.findAll("td")
     if(len(cells) == 7):
-    
         #Store value from each cell in the appropriate variable
         continent = cells[0].find(text=True).replace("\n","").replace("\r","")
         country = cells[1].find(text=True).replace("\n","").replace("\r","")
         system = cells[2].find(text=True).replace("\n","").replace("\r","")
         #Replace any %'s in the string, convert to float, divide by 100 to get as % fraction/decimal
-        #2c all fractions are floats 
         ratio = round((float(cells[3].find(text=True).replace("%",""))/100),4)
-        fare_system = cells[4].find(text=True).replace("\n","").replace("\r","")
+        fare_system =cells[4].find(text=True).replace("\n","").replace("\r","")
+        fare_system= fare_system.lower()
         #Had to use getText() to grab all the text in the cell- was only grabbing the currency type
-        fare_rate = cells[5].getText()
-        #Only grab the first 4 characters in the string and convert to int
-        #2a - All numbers are only numbers
+        fare_rate = cells[5].getText().replace("C","").replace("$", "").replace("A","").replace("US", "").replace("CHF","").replace("+", "")\
+        .replace("NY","").replace("SEK","44").replace("/", "").replace("PKR","20").replace("NT","").replace("HK3.5","3.5").replace("SGD","1.1").replace("(", "").replace("ZK", "24")\
+        .replace("4-11", "4").replace("-", "").replace("[", "").replace("bus", "").replace("from", "3.75").replace("HF", 4.3)[:4].split(" ")[0]
+        #Only grab the first 4 characters to get the earliest year in the string and convert to int
         year = int(cells[6].find(text=True)[:4])
 
         #Store variables in a dictionary
@@ -51,17 +49,34 @@ for row in htmlTable.find("tbody").findAll("tr"):
         #Add new row to table list for storage
         table.append(newRow)
 
-#just to be able to view the str in python in a 'neat' way
-#& monitor while data cleaning
+
+
 for row in table:
     for key,value in row.items():
         print key, "->", value
-#added a double space as we can't 
-#take out the spaces of the fare ratio yet & made some segments misleading
     print("\n\n")
 
-#2b. All currencies are converted to USD
+#converting into USD
+JPY = 0.0089
+CND= 0.74
+CNY = 0.15
+CHF = 1.01
+EUR= 1.14
+CZK= 0.044
+SEK= 0.11
+SGD = 0.73
+NT = 0.032
+PKR = 0.0072
+HK = 0.13
+AUD= 0.72
 
+USfare= {}
 
-
-#2d.how to deal with cleaning currencies 
+for c in country:
+    if c == "US":
+        pass
+    if c == "Japan":
+        for currency in fare_rate:
+            USfare = JPY * currency
+        print (USfare)
+#print(table)
