@@ -32,7 +32,7 @@ for row in htmlTable.find("tbody").findAll("tr"):
         #Had to use getText() to grab all the text in the cell- was only grabbing the currency type
         fare_rate = cells[5].getText().replace("C","").replace("$", "").replace("A","").replace("US", "").replace("CHF","").replace("+", "")\
         .replace("NY","").replace("SEK","44").replace("/", "").replace("PKR","20").replace("NT","").replace("HK3.5","3.5").replace("SGD","1.1").replace("(", "").replace("ZK", "24")\
-        .replace("4-11", "4").replace("-", "").replace("[", "").replace("bus", "").replace("From", "3.75").replace("HF", "4.3")[:4].split(" ")[0]
+        .replace(")", "").replace("4-11", "4").replace("-", "").replace("[", "").replace("Bus", "").replace("From", "3.75").replace("HF", "4.3")[:4].split(" ")[0]
         #Only grab the first 4 characters to get the earliest year in the string and convert to int
         year = int(cells[6].find(text=True)[:4])
 
