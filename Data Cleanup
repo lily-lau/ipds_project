@@ -60,8 +60,6 @@ for row in table:
 #take out the spaces of the fare ratio yet & made some segments misleading
     print("\n\n")
 
-print(table)
-
 #2b. All currencies are converted to USD
 
 
