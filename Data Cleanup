@@ -54,8 +54,8 @@ for row in htmlTable.find("tbody").findAll("tr"):
 #just to be able to view the str in python in a 'neat' way
 #& monitor while data cleaning
 for row in table:
-    for key,val in row.items():
-        print key, "->", val
+    for key,value in row.items():
+        print key, "->", value
 #added a double space as we can't 
 #take out the spaces of the fare ratio yet & made some segments misleading
     print("\n\n")
