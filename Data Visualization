@@ -14,3 +14,8 @@ fareboxdb <- DBI::dbConnect (RSQLite::SQLite(), "~/Documents/homeworkcs/fareboxd
 #just checks to see if everything is actually there 
 src_dbi(fareboxdb)
 
+#The unconditioned distribution of fare collection rates 
+#Scatter plot showing fare collection rates versus rates for flat rate systems 
+#Create a "joy plot" of the distribution of fare collection rates by fare system
+#Create a "joy plot" of the distribution of fare collection rates by continent 
+
