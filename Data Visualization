@@ -5,15 +5,42 @@ install.packages(c("dbplyr", "RSQLite"))
 library(dplyr)
 library(dbplyr)
 library(RSQLite)
-
 #connecting sql to R 
 # the "~/Documents" is subject to change on each persons computer
-fareboxdb <- DBI::dbConnect (RSQLite::SQLite(), "~/Documents/homeworkcs/fareboxdb.sqlite")
+con <- dbConnect(drv=RSQLite::SQLite(), "~/Desktop/ipds_project/fareboxdb.sqlite")
 
+#checking db contents
+dbListTables(con)
+dbListFields(con, "farebox_data")
 
-#calls the data
-src_dbi(fareboxdb)
-tbl(fareboxdb, sql("SELECT continent, country, system, ratio, fare_system, fare_rate, year FROM farebox_data"))
+## list all tables
+tables <- dbListTables(con)
+
+##list all columns
+columns <- dbListFields(con, "farebox_data")
+
+## exclude sqlite_sequence (contains table information)
+tables <- tables[tables != "sqlite_sequence"]
+
+df <- vector("list", length = length(tables))
+
+## create a data.frame for each table
+for (i in seq(along=tables)) {
+  df[[i]] <- dbGetQuery(conn=con, statement=paste("SELECT * FROM '", tables[[i]], "'", sep=""))
+}
+
+#making sure its a dataframe
+#class(dbGetQuery(conn=con, statement=paste("SELECT * FROM '", tables[[1]], "'", sep="")))
+
+#summary(df)
+
+#creating dataframe
+
+fbdata <- df[[1]]
+
+summary(fbdata)
+
+summary(fbdata$ratio)
 
 #The unconditioned distribution of fare collection rates 
 #Scatter plot showing fare collection rates versus rates for flat rate systems 
