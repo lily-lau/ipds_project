@@ -43,7 +43,7 @@ for row in htmlTable.find("tbody").findAll("tr"):
 
         #Converting fare rates from strings to floats (if fare rate is empty set it to null or None)
         if(fare_rate == ""):
-            fare_rate = None
+            fare_rate = float(0)
         else:
             fare_rate = float(fare_rate)
 
@@ -65,9 +65,36 @@ for row in htmlTable.find("tbody").findAll("tr"):
         #Add new row to table list for storage
         table.append(newRow)
 
+############################################Conversion to USD##################################################
 
+FxRate = {"US" : 1,
+          "Japan" : 0.0089,
+          "Canada" : 0.74,
+          "China" : 0.15,
+          "Switzerland" : 1.01,
+          "France" : 1.14,
+          "Austria" : 1.14,
+          "Germany" : 1.14,
+          "Italy" : 1.14,
+          "Finland" : 1.14,
+          "Netherlands" : 1.14,
+          "Belgium" : 1.14,
+          "Denmark" : 1.14,
+          "Spain" : 1.14,
+          "UK" : 1.28,
+          "Czech Republic" : 0.044,
+          "Sweden" : 0.11,
+          "Singapore" : 0.73,
+          "Taiwan" : 0.032,
+          "Pakistan" : 0.0072,
+          "Hong Kong" : 0.13,
+          "Australia" : 0.72,
+          "New Zealand" : 0.69}
 
+for r in table:
+    r["fare_rate"] *= FxRate[r["country"]]
 
+#################################################VIEWING DATA##################################################
 
 
 for row in table:
@@ -76,27 +103,4 @@ for row in table:
     print("\n\n")
 
 
-#converting into USD
-JPY = 0.0089
-CND= 0.74
-CNY = 0.15
-CHF = 1.01
-EUR= 1.14
-CZK= 0.044
-SEK= 0.11
-SGD = 0.73
-NT = 0.032
-PKR = 0.0072
-HK = 0.13
-AUD= 0.72
 
-USfare= {}
-
-for c in country:
-    if c == "US":
-        pass
-    if c == "Japan":
-        for currency in fare_rate:
-            USfare = JPY * currency
-        print (USfare)
-#print(table)
