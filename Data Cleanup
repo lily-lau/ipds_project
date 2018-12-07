@@ -129,4 +129,3 @@ cur.executemany("""
         
 conn.commit()
 conn.close()
-
