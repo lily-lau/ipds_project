@@ -3,6 +3,7 @@
 #pip install requests
 from bs4 import BeautifulSoup
 import requests
+import string
 
 #List of table rows to hold rows from wikipedia page table
 table = []
@@ -15,7 +16,6 @@ soup = BeautifulSoup(wikiPage.content, "html.parser")
 
 #Select the table on the page (first element from findAll array)
 htmlTable = soup.find("table", {"class": "wikitable"})
-
 #Loop through table rows in the body of the table (not the head)
 for row in htmlTable.find("tbody").findAll("tr"):
     #Get all the cells in the current row
@@ -25,16 +25,32 @@ for row in htmlTable.find("tbody").findAll("tr"):
         continent = cells[0].find(text=True).replace("\n","").replace("\r","")
         country = cells[1].find(text=True).replace("\n","").replace("\r","")
         system = cells[2].find(text=True).replace("\n","").replace("\r","")
+
         #Replace any %'s in the string, convert to float, divide by 100 to get as % fraction/decimal
         ratio = round((float(cells[3].find(text=True).replace("%",""))/100),4)
         fare_system =cells[4].find(text=True).replace("\n","").replace("\r","")
         fare_system= fare_system.lower()
         #Had to use getText() to grab all the text in the cell- was only grabbing the currency type
-        fare_rate = cells[5].getText().replace("C","").replace("$", "").replace("A","").replace("US", "").replace("CHF","").replace("+", "")\
+        non_ascii_fare_rate = cells[5].getText().replace("C","").replace("$", "").replace("A","").replace("US", "").replace("+", "")\
         .replace("NY","").replace("SEK","44").replace("/", "").replace("PKR","20").replace("NT","").replace("HK3.5","3.5").replace("SGD","1.1").replace("(", "").replace("ZK", "24")\
-        .replace(")", "").replace("4-11", "4").replace("-", "").replace("[", "").replace("Bus", "").replace("From", "3.75").replace("HF", "4.3")[:4].split(" ")[0]
+        .replace("4-11", "4").replace("[", "").replace("Bus", "").replace("From", "3.75").replace(")", "").replace("HF", "4.3").replace("EUR","").strip()[:4].split(" ")[0]
+        #Special condition, this row was really complicated and the only one messing it up so we handled it specifically
+        if(system == "Washington, DC (WMATA)"):
+            non_ascii_fare_rate = "2"
+        #Strip non-ASCII characters from fare rates
+        printable = set(string.printable)
+        fare_rate = ''.join(filter(lambda x: x in string.printable, non_ascii_fare_rate))
+
+        #Converting fare rates from strings to floats (if fare rate is empty set it to null or None)
+        if(fare_rate == ""):
+            fare_rate = None
+        else:
+            fare_rate = float(fare_rate)
+
+
         #Only grab the first 4 characters to get the earliest year in the string and convert to int
         year = int(cells[6].find(text=True)[:4])
+
 
         #Store variables in a dictionary
         newRow = {
@@ -51,10 +67,14 @@ for row in htmlTable.find("tbody").findAll("tr"):
 
 
 
+
+
+
 for row in table:
     for key,value in row.items():
         print key, "->", value
     print("\n\n")
+
 
 #converting into USD
 JPY = 0.0089
