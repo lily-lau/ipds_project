@@ -10,6 +10,8 @@ library(RSQLite)
 # the "~/Documents" is subject to change on each persons computer
 fareboxdb <- DBI::dbConnect (RSQLite::SQLite(), "~/Documents/homeworkcs/fareboxdb.sqlite")
 
+tbl(fareboxdb, sql("SELECT continent, country, system, ratio, fare_system, fare_rate, year FROM farebox_data"))
+
 
 #just checks to see if everything is actually there 
 src_dbi(fareboxdb)
