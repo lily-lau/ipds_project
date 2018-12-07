@@ -4,6 +4,11 @@
 from bs4 import BeautifulSoup
 import requests
 import string
+import sqlite3
+
+#Create file under same folder titled "IPDSProjectdb.sqlite"
+conn = sqlite3.connect("IPDSProjectdb.sqlite")
+cur = conn.cursor ()
 
 #List of table rows to hold rows from wikipedia page table
 table = []
@@ -101,6 +106,3 @@ for row in table:
     for key,value in row.items():
         print key, "->", value
     print("\n\n")
-
-
-
