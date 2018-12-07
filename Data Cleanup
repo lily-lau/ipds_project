@@ -26,16 +26,19 @@ for row in htmlTable.find("tbody").findAll("tr"):
     #Get all the cells in the current row
     cells = row.findAll("td")
     if(len(cells) == 7):
-        #Store value from each cell in the appropriate variable
+        ###Store value from each cell in the appropriate variable###
         continent = cells[0].find(text=True).replace("\n","").replace("\r","")
         country = cells[1].find(text=True).replace("\n","").replace("\r","")
         system = cells[2].find(text=True).replace("\n","").replace("\r","")
 
         #Replace any %'s in the string, convert to float, divide by 100 to get as % fraction/decimal
         ratio = round((float(cells[3].find(text=True).replace("%",""))/100),4)
-        fare_system =cells[4].find(text=True).replace("\n","").replace("\r","")
+        #made all the fare systems only have 1 identifier : distance, flat, zone ect. 
+        fare_system =cells[4].find(text=True).replace("\n","").replace("\r","").split(" ")[0]
+        #made all lower case 
         fare_system= fare_system.lower()
         #Had to use getText() to grab all the text in the cell- was only grabbing the currency type
+        #had to use .replace .split .strip and splicing as well as [0] in order to clean the more consitant data.
         non_ascii_fare_rate = cells[5].getText().replace("C","").replace("$", "").replace("A","").replace("US", "").replace("+", "")\
         .replace("NY","").replace("SEK","44").replace("/", "").replace("PKR","20").replace("NT","").replace("HK3.5","3.5").replace("SGD","1.1").replace("(", "").replace("ZK", "24")\
         .replace("4-11", "4").replace("[", "").replace("Bus", "").replace("From", "3.75").replace(")", "").replace("HF", "4.3").replace("EUR","").strip()[:4].split(" ")[0]
@@ -106,3 +109,5 @@ for row in table:
     for key,value in row.items():
         print key, "->", value
     print("\n\n")
+##############################################MOVING DATA TO SQL###############################
+
