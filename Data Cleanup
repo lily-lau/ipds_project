@@ -7,7 +7,7 @@ import string
 import sqlite3
 
 #Create file under same folder titled "IPDSProjectdb.sqlite"
-conn = sqlite3.connect("IPDSProjectdb.sqlite")
+conn = sqlite3.connect("fareboxdb.sqlite")
 cur = conn.cursor ()
 
 #List of table rows to hold rows from wikipedia page table
@@ -110,4 +110,23 @@ for row in table:
         print key, "->", value
     print("\n\n")
 ##############################################MOVING DATA TO SQL###############################
+
+#remove table if already exists and any data it contains
+cur.execute('DROP TABLE IF EXISTS farebox_data;')
+
+#create the table within the database
+sql = '''CREATE TABLE farebox_data ('continent' TEXT, 'country' TEXT, 'system' TEXT, 'ratio' REAL,
+                                'fare_system' TEXT, 'fare_rate' REAL, 'year' TEXT)'''
+
+cur.execute(sql)
+
+#joining python data and sql together
+cur.executemany("""
+    INSERT INTO
+        farebox_data (continent, country, system, ratio, fare_system, fare_rate, year)
+    VALUES
+        (:continent, :country, :system, :ratio, :fare_system, :fare_rate, :year)""", table)
+        
+conn.commit()
+conn.close()
 
