@@ -43,7 +43,11 @@ summary(fbdata)
 summary(fbdata$ratio)
 
 #The unconditioned distribution of fare collection rates 
+ggplot(data = fbdata, aes(x=system, y=fare_rate)) + geom_point(alpha = 1)
+
 #Scatter plot showing fare collection rates versus rates for flat rate systems 
+ggplot(data = fbdata, aes(y=system["flat rate"], x=fare_rate)) + geom_point(alpha = 1)
+
 #Create a "joy plot" of the distribution of fare collection rates by fare system
 #Create a "joy plot" of the distribution of fare collection rates by continent 
 
