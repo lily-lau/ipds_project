@@ -61,4 +61,6 @@ ggplot(fbdata, aes(x =fare_rate, y = system))+
   geom_joy(scale = 5) + 
   theme_joy()
 #Create a "joy plot" of the distribution of fare collection rates by continent 
-
+ggplot(fbdata, aes(x =fare_rate, y = country))+ 
+  geom_joy(scale = .9) + 
+  theme_joy()
