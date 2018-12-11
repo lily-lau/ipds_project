@@ -53,7 +53,7 @@ summary(fbdata$ratio)
 #The unconditioned distribution of fare collection rates 
 ggplot(data = fbdata, aes(x=ratio)) + geom_density() +
   ggtitle("distribution of fare collection rates")+
-  labs(y="fare rate", x="system")
+  labs(y="farebox ratio", x="system")
 
 #Scatter plot showing fare collection rates versus rates for flat rate systems 
 ggplot(data = fbdata, aes(y=fare_system, x=fare_rate, colour=fare_system)) + 
@@ -65,7 +65,7 @@ ggplot(data = fbdata, aes(y=fare_system, x=fare_rate, colour=fare_system)) +
 ggplot(fbdata, aes(x =ratio, y = fare_system , fill = fare_system))+ 
   geom_joy(scale=1.5, rel_min_height=.01, alpha = 0.7) + 
   scale_y_discrete(expand = c(0.01, 0)) +
-  labs(x = "Fare box ratio", y= "Fare System" , title = "Fare ratio by fare system")
+  labs(x = "Farebox ratio", y= "Fare System" , title = "Farebox ratio by fare system")
 theme_joy() + scale_fill_discrete(guide=FALSE)
 
  
