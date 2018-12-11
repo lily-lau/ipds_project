@@ -68,9 +68,10 @@ ggplot(fbdata, aes(x =ratio, y = fare_system , fill = fare_system))+
   labs(x = "Fare box ratio", y= "Fare System" , title = "Fare ratio by fare system")
 theme_joy() + scale_fill_discrete(guide=FALSE)
 
+ 
 #Create a "joy plot" of the distribution of fare collection rates by continent 
-ggplot(fbdata, aes(x =fare_rate, y = continent, fill = continent))+ 
+ggplot(fbdata, aes(x =ratio, y = continent, fill = continent))+ 
   geom_joy(scale=1.5, rel_min_height=.01, alpha = 0.7) + 
   scale_y_discrete(expand = c(0.01, 0)) +
-  labs(x = "Fare Rate", y= "Continent" , title = "Fare Collection Rates by Continent")
+  labs(x = "Farebox Ratio", y= "Continent" , title = "Farebox Ratio by Continent")
 theme_joy() + scale_fill_discrete(guide=FALSE)
