@@ -6,15 +6,15 @@ library(dplyr)
 library(dbplyr)
 library(RSQLite)
 
-#connecting sql to R 
+##connecting sql to R 
 # the "~/Documents" is subject to change on each persons computer
 con <- dbConnect(drv=RSQLite::SQLite(), "~/Desktop/ipds_project/fareboxdb.sqlite")
 
-#checking db contents
+##checking db contents
 #dbListTables(con)
 #dbListFields(con, "farebox_data")
 
-## list all tables
+##list all tables
 #tables <- dbListTables(con)
 
 ##list all columns
@@ -31,7 +31,7 @@ for (i in seq(along=tables)) {
 }
 
 
-#making sure its a dataframe
+##making sure its a dataframe
 #class(dbGetQuery(conn=con, statement=paste("SELECT * FROM '", tables[[1]], "'", sep="")))
 
 #summary(df)
@@ -47,8 +47,10 @@ summary(fbdata)
 #The unconditioned distribution of fare collection rates 
 
 ggplot(data = fbdata, aes(x=ratio)) + geom_density() +
-  ggtitle("Distribution of fare collection rates")+
-  labs(y="Density", x="Ratio")
+  geom_vline(xintercept = mean(fbdata$ratio), colour = "red", 
+             linetype = "dashed") +
+  ggtitle("Distribution of fare collection rates") +
+  labs(y="Density", x="Ratio") 
 
 #Scatter plot showing fare collection rates versus rates for flat rate systems 
 
@@ -71,4 +73,21 @@ ggplot(fbdata, aes(x =ratio, y = continent, fill = continent))+
   geom_joy(scale=1.5, rel_min_height=.01, alpha = 0.7) + 
   scale_y_discrete(expand = c(0.01, 0)) +
   labs(x = "Farebox Ratio", y= "Continent" , title = "Fare Collection Rates by Continent")
-theme_joy() + scale_fill_discrete(guide=FALSE)
+  theme_joy() + scale_fill_discrete(guide=FALSE)
+
+#Predictive Model
+x <- runif(86)
+fbdata$continent <- with(fbdata, ifelse(x < 0.5, "Asia", "NA"))
+y <- fbdata$ratio
+
+m <- lm(y ~ continent, data = fbdata)
+m.linear <- lm (y ~ x, data = fbdata)
+
+fbdata$y.hat <- predict(m)
+fbdata$y.hat.linear <- predict(m.linear)
+
+ggplot(data = fbdata, aes(x=x, y=y, color = x)) + geom_point() +
+  geom_point(aes(y = y.hat), colour = "red") +
+  geom_point(aes(y = y.hat.linear), colour = "light green") +
+  labs(x = "Continents", y= "Farebox Ratio" , title = "Predictive Modelling of Farebox Ratio by Continent", 
+  color = "Continents\n")
