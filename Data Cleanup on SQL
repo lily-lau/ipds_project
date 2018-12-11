@@ -1,0 +1,19 @@
+#On Terminal, please run fareboxdb.sqlite
+#Then, type the following code
+
+#1. Creating a new separate table for Flat Rates:
+
+CREATE TABLE flatdb
+AS SELECT fare_system, ratio, fare_rate
+FROM farebox_data
+WHERE fare_system = "flat";
+
+#2. Creating a new separate table for Non Zero Values:
+
+CREATE TABLE nonzerodb
+AS SELECT fare_system, ratio
+FROM farebox_data
+WHERE fare_system <> "";
+
+#Note that (2) is only used for our
+#"joy plot" of the distribution of farebox ratios by fare system
