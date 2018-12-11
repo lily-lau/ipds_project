@@ -51,21 +51,27 @@ summary(fbdata)
 summary(fbdata$ratio)
 
 #The unconditioned distribution of fare collection rates 
-ggplot(data = fbdata, aes(x=system, y=fare_rate)) + geom_point(alpha = 1)
+ggplot(data = fbdata, aes(x=system, y=fare_rate)) + 
+  geom_point(alpha = 1) +
+  ggtitle("distribiution of fare collection rates")+
+  labs(y="fare rate", x="system")
 
 #Scatter plot showing fare collection rates versus rates for flat rate systems 
-ggplot(data = fbdata, aes(y=system["flat rate"], x=fare_rate)) + geom_point(alpha = 1)
+ggplot(data = fbdata, aes(y=fare_system, x=fare_rate, colour=fare_system)) + 
+  geom_point(alpha = 1) +
+  ggtitle("fare collection vs flat rate systems")+
+  labs(y="flat rate ", x = "fare rate ")
 
 #Create a "joy plot" of the distribution of fare collection rates by fare system
 ggplot(fbdata, aes(x =fare_rate, y = fare_system, fill = fare_system))+ 
   geom_joy(scale=1.5, rel_min_height=.01, alpha = 0.7) + 
   scale_y_discrete(expand = c(0.01, 0)) +
   labs(x = "Fare Rate", y= "Fare System" , title = "Fare Collection Rates by Continent")
-  theme_joy() + scale_fill_discrete(guide=FALSE)
+theme_joy() + scale_fill_discrete(guide=FALSE)
 
 #Create a "joy plot" of the distribution of fare collection rates by continent 
 ggplot(fbdata, aes(x =fare_rate, y = continent, fill = continent))+ 
   geom_joy(scale=1.5, rel_min_height=.01, alpha = 0.7) + 
   scale_y_discrete(expand = c(0.01, 0)) +
   labs(x = "Fare Rate", y= "Continent" , title = "Fare Collection Rates by Continent")
-  theme_joy() + scale_fill_discrete(guide=FALSE)
+theme_joy() + scale_fill_discrete(guide=FALSE)
