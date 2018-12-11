@@ -53,7 +53,7 @@ summary(fbdata$ratio)
 #The unconditioned distribution of fare collection rates 
 ggplot(data = fbdata, aes(x=system, y=fare_rate)) + 
   geom_point(alpha = 1) +
-  ggtitle("distribiution of fare collection rates")+
+  ggtitle("distribution of fare collection rates")+
   labs(y="fare rate", x="system")
 
 #Scatter plot showing fare collection rates versus rates for flat rate systems 
