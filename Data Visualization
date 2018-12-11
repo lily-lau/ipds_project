@@ -51,8 +51,7 @@ summary(fbdata)
 summary(fbdata$ratio)
 
 #The unconditioned distribution of fare collection rates 
-ggplot(data = fbdata, aes(x=system, y=fare_rate)) + 
-  geom_point(alpha = 1) +
+ggplot(data = fbdata, aes(x=ratio)) + geom_density() +
   ggtitle("distribution of fare collection rates")+
   labs(y="fare rate", x="system")
 
