@@ -67,5 +67,6 @@ ggplot(fbdata, aes(x =fare_rate, y = fare_system))+
 ggplot(fbdata, aes(x =fare_rate, y = continent))+ 
   geom_joy(scale=1.5, rel_min_height=.01) + 
   scale_y_discrete(expand = c(0.01, 0)) +
+  labs(x = "fare rate", y= "continent" , title = "fare collection rates by continent")
   theme_joy() +
-  theme(axis.title.y = element_blank())
+  theme(axis.title.y = element_blank()) 
