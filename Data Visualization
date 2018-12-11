@@ -1,13 +1,15 @@
 install.packages("ggplot2")
 library("ggplot2", lib.loc="/Library/Frameworks/R.framework/Versions/3.5/Resources/library")
 install.packages(c("dbplyr", "RSQLite"))
+install.packages("ggjoy")
 #double check that you have these three boxed off on the right under packages 
 library(dplyr)
 library(dbplyr)
 library(RSQLite)
+library(ggjoy)
 #connecting sql to R 
 # the "~/Documents" is subject to change on each persons computer
-con <- dbConnect(drv=RSQLite::SQLite(), "~/Desktop/ipds_project/fareboxdb.sqlite")
+con <- dbConnect(drv=RSQLite::SQLite(), "~/Documents/homeworkcs/fareboxdb.sqlite")
 
 #checking db contents
 dbListTables(con)
@@ -40,6 +42,12 @@ fbdata <- df[[1]]
 
 summary(fbdata)
 
+#creating dataframe
+
+fbdata <- df[[1]]
+
+summary(fbdata)
+
 summary(fbdata$ratio)
 
 #The unconditioned distribution of fare collection rates 
@@ -49,5 +57,8 @@ ggplot(data = fbdata, aes(x=system, y=fare_rate)) + geom_point(alpha = 1)
 ggplot(data = fbdata, aes(y=system["flat rate"], x=fare_rate)) + geom_point(alpha = 1)
 
 #Create a "joy plot" of the distribution of fare collection rates by fare system
+ggplot(fbdata, aes(x =fare_rate, y = system))+ 
+  geom_joy(scale = 5) + 
+  theme_joy()
 #Create a "joy plot" of the distribution of fare collection rates by continent 
 
