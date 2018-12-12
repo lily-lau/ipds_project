@@ -22,18 +22,23 @@ Due to some formatting complications, we have also made some Data Assumptions:
 - For "Year", if given a range or multiple years, we have chosen the earliest one
 - For "fare_rate", we have chosen the first dollar amount that appears
 
-3) Write the cleaned up dataset to a local SQLite database. Please refer to "Data Cleanup".
+3) Write the cleaned up dataset to a local SQLite database called fareboxdb.sqlite. Please refer to "Data Cleanup".
+
+4) Running fareboxdb.sqlite on Terminal, we did some miscellaneous data cleanup. Please refer to "Data Cleanup on SQL".
+On the SQLite Database, we have done the following:
+
+- Create new table "flatdb" to shows flat rate system and ratio
+- Create new table "nonzerodb" to removes data with no data inputs
 
 4) Access the SQLite database from R, and create the following plots. Please Refer to "Data Visualization". For Visualization, we will show:
  
 i. The unconditioned distribution of fare collection rates 
 
-ii. Scatter plot showing fare collection rates versus rates for flat rate systems 
+ii. Scatter plot showing farebox ratio versus fare rates (i.e., what it costs to ride) for flat rate systems 
 
-iii. Create a "joy plot" of the distribution of fare collection rates by fare system
+iii. Create a "joy plot" (i.e., facet plot) of the distribution of farebox ratios by fare system
 
-iV. Create a "joy plot" of the distribution of fare collection rates by continent 
+iV. Create a "joy plot" of the distribution of farebox ratios by continent 
 
 
 5) Run a prediction model of the fare collection ratio on predictors---what did we learn? 
-
