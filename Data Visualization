@@ -91,3 +91,69 @@ ggplot(data = fbdata, aes(x=x, y=y, color = x)) + geom_point() +
   geom_point(aes(y = y.hat.linear), colour = "light green") +
   labs(x = "Continents", y= "Farebox Ratio" , title = "Predictive Modelling of Farebox Ratio by Continent", 
   color = "Continents\n")
+
+
+#Check the correlations between variables and ratio and pick up the predictors
+
+continent=as.factor(fbdata$"continent")
+
+country=fbdata$country
+
+system=as.factor(fbdata$"system")
+
+fare_system=as.factor(fbdata$"fare_system")
+
+fare_rate=as.numeric(fbdata$"fare_rate")
+
+year=as.numeric(fbdata$"year")
+
+ratio=as.numeric(fbdata$"ratio")
+
+data=cbind(continent,country,fare_rate,ratio)
+
+pairs(data)
+
+cor(data)
+
+###############################
+
+##correlations output
+
+###############################
+
+continent     country      system fare_system  fare_rate        year      ratio
+
+continent    1.00000000  0.09391696 -0.08025805  0.37131693  0.2617139  0.28946131 -0.5969103
+
+country      0.09391696  1.00000000 -0.04917738  0.04608308  0.2056747  0.36026409 -0.1536311
+
+system      -0.08025805 -0.04917738  1.00000000 -0.14297900  0.1216436  0.08075993  0.1266938
+
+fare_system  0.37131693  0.04608308 -0.14297900  1.00000000  0.3396366  0.08877694 -0.2403239
+
+fare_rate    0.26171387  0.20567467  0.12164365  0.33963664  1.0000000  0.16632891 -0.1712327
+
+year         0.28946131  0.36026409  0.08075993  0.08877694  0.1663289  1.00000000 -0.1724118
+
+ratio       -0.59691035 -0.15363106  0.12669381 -0.24032390 -0.1712327 -0.17241184  1.0000000
+
+###############################
+
+
+
+m <- lm(ratio~factor(continent), data = fbdata)
+
+m.linear <- lm(ratio~factor(continent)+factor(country)+factor(fare_rate), data=fbdata)
+
+
+
+summary(m)
+
+summary(m.linear)
+
+
+
+#Note: The number of variables are greater than the number of rows, creating fitting issue and not able to do further prediction, 
+need to reduce the number of variables in the model (i.e. system)
+
+#Base on the correlations to the ratio, ignore collinearity in this case
